@@ -13,6 +13,11 @@ vim.opt.autoread = true
 vim.opt.colorcolumn = "100"
 vim.opt.signcolumn = "yes"
 vim.opt.showmatch = false
+vim.opt.hlsearch = false
+
+vim.diagnostic.config({
+	virtual_text = true,
+})
 
 vim.opt.clipboard:append("unnamedplus")
 
