@@ -1,7 +1,7 @@
 
 -- theming
 vim.o.background = "dark" -- or "light" for light mode
-vim.cmd([[colorscheme gruvbox]])
+vim.cmd([[colorscheme moonfly]])
 
 -- Add cmp_nvim_lsp capabilities settings to lspconfig
 -- This should be executed before you configure any language server
@@ -14,7 +14,14 @@ lspconfig_defaults.capabilities = vim.tbl_deep_extend(
 
 -- These are just examples. Replace them with the language
 -- servers you have installed in your system
-require('lspconfig').gopls.setup({})
+vim.lsp.config('gopls', {
+  settings = {
+    gopls = {
+      completeUnimported = true,
+    },
+  },
+})
+vim.lsp.enable('gopls')
 
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(event)
@@ -45,22 +52,6 @@ cmp.setup({
     end,
   },
   mapping = cmp.mapping.preset.insert({}),
-})
-
--- Nvim-tree
-require("nvim-tree").setup({
-  sort = {
-    sorter = "case_sensitive",
-  },
-  view = {
-    width = 30,
-  },
-  renderer = {
-    group_empty = true,
-  },
-  filters = {
-    dotfiles = true,
-  },
 })
 
 -- telescope

@@ -1,6 +1,6 @@
 return {
-	"ellisonleao/gruvbox.nvim",
+	"bluz71/vim-moonfly-colors",
+	name = "moonfly",
 	priority = 1000,
-	config = true, 
-	opts = ...
+	lazy = false,
 }

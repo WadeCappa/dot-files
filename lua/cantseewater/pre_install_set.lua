@@ -22,6 +22,12 @@ vim.diagnostic.config({
 vim.opt.clipboard:append("unnamedplus")
 
 vim.opt.incsearch = true -- incremental search
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+
+-- spell check
+vim.opt.spell = true
+vim.opt.spelllang = "en_us" -- or "en", "de", "es", etc., or a comma-separated list
 
 -- Set leader key to space. Note that this is also set in the top level config, so we probably
 -- don't need to set it here too.
