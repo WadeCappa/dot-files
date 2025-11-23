@@ -1,7 +1,7 @@
 
 -- theming
 vim.o.background = "dark" -- or "light" for light mode
-vim.cmd([[colorscheme everforest]])
+vim.cmd([[colorscheme catppuccin]])
 
 -- Add cmp_nvim_lsp capabilities settings to lspconfig
 -- This should be executed before you configure any language server
@@ -12,8 +12,16 @@ lspconfig_defaults.capabilities = vim.tbl_deep_extend(
   require('cmp_nvim_lsp').default_capabilities()
 )
 
--- These are just examples. Replace them with the language
--- servers you have installed in your system
+---- Language servers ----
+-- setup mason
+require("mason-lspconfig").setup({
+  ensure_installed = { 
+		"pyright", 
+		"gopls", 
+	},  
+})
+
+-- golang 
 vim.lsp.config('gopls', {
   settings = {
     gopls = {
@@ -23,8 +31,25 @@ vim.lsp.config('gopls', {
 })
 vim.lsp.enable('gopls')
 
+-- python
+vim.lsp.config('pyright', {
+  settings = {
+    pyright = {
+      python = {
+        analysis = {
+          autoImportCompletions = true,
+          typeCheckingMode = "strict",  -- "off", "basic", or "strict"
+          diagnosticMode = "workspace",  -- options: "openFilesOnly" or "workspace"
+        },
+      },
+    },
+  },
+})
+vim.lsp.enable('pyright')
+
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(event)
+    local api = require('nvim-tree.api')
     local opts = {buffer = event.buf}
 
     vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
@@ -37,6 +62,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
     vim.keymap.set({'n', 'x'}, '<leader>fm', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
     vim.keymap.set('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
+    vim.keymap.set('n', '<Leader>e', api.tree.toggle, { desc = 'Toggle NvimTree' })
   end,
 })
 

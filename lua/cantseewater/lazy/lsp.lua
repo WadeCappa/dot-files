@@ -5,7 +5,7 @@ local plugins = {
 		opts = {
 			ensure_installed = {
 				"gopls",
-				"delve",
+				"pyright",
 			},
 		},
 	},

@@ -1,5 +1,5 @@
 return {
-	"sainnhe/everforest",
+	"catppuccin/nvim",
 	priority = 1000,
 	lazy = false,
 }
