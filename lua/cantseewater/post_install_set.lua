@@ -1,7 +1,7 @@
 
 -- theming
 vim.o.background = "dark" -- or "light" for light mode
-vim.cmd([[colorscheme moonfly]])
+vim.cmd([[colorscheme everforest]])
 
 -- Add cmp_nvim_lsp capabilities settings to lspconfig
 -- This should be executed before you configure any language server
