@@ -6,6 +6,11 @@ return {
     "nvim-tree/nvim-web-devicons",
   },
   config = function()
-    require("nvim-tree").setup {}
+    require("nvim-tree").setup {
+		view = {
+			width = 50,
+			relativenumber = true,
+		},
+	}
   end,
 }
