@@ -52,6 +52,7 @@ vim.keymap.set("n", "<leader>pa", function()
 end)
 
 -- Return to last edit position when opening files
+local augroup = vim.api.nvim_create_augroup("UserConfig", { clear = true })
 vim.api.nvim_create_autocmd("BufReadPost", {
   group = augroup,
   callback = function()
