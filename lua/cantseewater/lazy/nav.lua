@@ -12,5 +12,7 @@ return {
 			relativenumber = true,
 		},
 	}
+    local api = require("nvim-tree.api")
+    vim.keymap.set("n", "<Leader>e", api.tree.toggle, { desc = "Toggle NvimTree" })
   end,
 }
