@@ -6,7 +6,7 @@ local plugins = {
     "jay-babu/mason-nvim-dap.nvim",
     dependencies = { "mason-org/mason.nvim" },
     opts = {
-      ensure_installed = { "delve" },
+      ensure_installed = { "delve", "python" },
       handlers = {},
     },
   },
@@ -86,6 +86,24 @@ local plugins = {
       vim.keymap.set("n", "<leader>de", function()
         dapui.eval(nil, { enter = true })
       end, { desc = "DAP: Evaluate expression" })
+    end,
+  },
+
+  {
+    "mfussenegger/nvim-dap-python",
+    dependencies = { "mfussenegger/nvim-dap" },
+    ft = "python",
+    config = function()
+      require("dap-python").setup(
+        vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python"
+      )
+
+      vim.keymap.set("n", "<leader>dpt", require("dap-python").test_method,
+        { desc = "DAP Python: Debug test method under cursor" })
+      vim.keymap.set("n", "<leader>dpT", require("dap-python").test_class,
+        { desc = "DAP Python: Debug test class under cursor" })
+      vim.keymap.set("v", "<leader>dps", require("dap-python").debug_selection,
+        { desc = "DAP Python: Debug selection" })
     end,
   },
 
