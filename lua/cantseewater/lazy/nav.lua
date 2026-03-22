@@ -14,5 +14,6 @@ return {
 	}
     local api = require("nvim-tree.api")
     vim.keymap.set("n", "<Leader>e", api.tree.toggle, { desc = "Toggle NvimTree" })
+    vim.keymap.set("n", "<Leader>l", ':NvimTreeFindFile<CR>', { desc = "Focus file explorer on current buffer" })
   end,
 }
