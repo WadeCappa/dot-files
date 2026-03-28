@@ -44,9 +44,9 @@ vim.keymap.set("n", "N", "Nzzzv", { desc = "Previous search result (centered)" }
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Half page down (centered)" })
 vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Half page up (centered)" })
 
--- Copy Full File-Path
+-- Copy Relative File-Path
 vim.keymap.set("n", "<leader>pa", function()
-	local path = vim.fn.expand("%:p")
+	local path = vim.fn.expand("%:.")
 	vim.fn.setreg("+", path)
 	print("file:", path)
 end)
