@@ -2,15 +2,18 @@ return {
   "nvim-treesitter/nvim-treesitter",
   build = ":TSUpdate",
   config = function()
-    local configs = require("nvim-treesitter.configs")
+    -- Use the top-level module instead of .configs
+    local ts = require("nvim-treesitter")
 
-    configs.setup({
-      ensure_installed = {
-        "c", "lua", "vim", "vimdoc", "elixir", "javascript", "html", "python", "typescript" , "go"
-      },
-      sync_install = false,
+    -- 1. Configure features like highlighting and indenting
+    ts.setup({
       highlight = { enable = true },
       indent = { enable = true },
+    })
+
+    -- 2. Define your desired parsers using the new install API
+    ts.install({
+      "c", "lua", "vim", "vimdoc", "elixir", "javascript", "html", "python", "typescript", "go"
     })
   end
 }
