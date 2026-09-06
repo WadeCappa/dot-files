@@ -6,7 +6,7 @@ local plugins = {
     "jay-babu/mason-nvim-dap.nvim",
     dependencies = { "mason-org/mason.nvim" },
     opts = {
-      ensure_installed = { "delve", "python" },
+      ensure_installed = { "delve", "python", "codelldb" },
       handlers = {},
     },
   },
@@ -43,6 +43,40 @@ local plugins = {
       end, { desc = "DAP: Log point" })
       vim.keymap.set("n", "<leader>dx", dap.clear_breakpoints, { desc = "DAP: Clear breakpoints" })
       vim.keymap.set("n", "<leader>d.", dap.run_last,          { desc = "DAP: Run last" })
+
+      -- C/C++ (and Rust, which uses the same adapter) via codelldb, installed
+      -- through mason-nvim-dap above.
+      --
+      -- NOTE: this is a minimal, build-system-agnostic setup: it just asks for
+      -- the path to the compiled binary each time you launch. Once a build
+      -- system (CMake, Makefile, etc.) is settled on, this should be replaced
+      -- with something that knows how to build the project and locate the
+      -- resulting binary automatically (e.g. cmake-tools.nvim for CMake).
+      -- Whatever you compile with must include debug symbols (-g) for
+      -- breakpoints/variables to work.
+      dap.adapters.codelldb = {
+        type = "server",
+        port = "${port}",
+        executable = {
+          command = vim.fn.stdpath("data") .. "/mason/bin/codelldb",
+          args = { "--port", "${port}" },
+        },
+      }
+
+      dap.configurations.cpp = {
+        {
+          name = "Launch",
+          type = "codelldb",
+          request = "launch",
+          program = function()
+            return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+          end,
+          cwd = "${workspaceFolder}",
+          stopOnEntry = false,
+        },
+      }
+      dap.configurations.c = dap.configurations.cpp
+      dap.configurations.rust = dap.configurations.cpp
     end,
   },
 

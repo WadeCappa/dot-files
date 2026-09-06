@@ -13,7 +13,7 @@ return {
 
     -- 2. Define your desired parsers using the new install API
     ts.install({
-      "c", "lua", "vim", "vimdoc", "elixir", "javascript", "html", "python", "typescript", "go"
+      "c", "cpp", "lua", "vim", "vimdoc", "elixir", "javascript", "html", "python", "typescript", "go"
     })
   end
 }
