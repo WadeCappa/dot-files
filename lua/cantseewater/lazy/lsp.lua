@@ -2,14 +2,22 @@
 local plugins = {
 	{
 		"mason-org/mason.nvim",
+		opts = {},
+	},
+	{
+		-- NOTE: `ensure_installed` belongs here, not on mason.nvim itself.
+		-- mason.nvim's setup() has no such option and silently ignores it,
+		-- which is why gopls/pyright/clangd were never actually installed
+		-- even though they were listed under mason.nvim's opts before.
+		"mason-org/mason-lspconfig.nvim",
 		opts = {
 			ensure_installed = {
 				"gopls",
 				"pyright",
+				"clangd",
 			},
 		},
 	},
-	{"mason-org/mason-lspconfig.nvim"},
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
@@ -26,7 +34,9 @@ local plugins = {
 				require('cmp_nvim_lsp').default_capabilities()
 			)
 
-			require("mason-lspconfig").setup()
+			-- mason-lspconfig's own setup({ ensure_installed = ... }) is called
+			-- automatically by lazy.nvim from its `opts` above, and it runs
+			-- before this config() since nvim-lspconfig depends on it.
 
 			-- golang
 			vim.lsp.config('gopls', {
@@ -53,6 +63,20 @@ local plugins = {
 				},
 			})
 			vim.lsp.enable('pyright')
+
+			-- C/C++
+			-- NOTE: clangd works out of the box for single files, but for real
+			-- projects it needs a compile_commands.json (or a compile_flags.txt)
+			-- to know your include paths/defines. How you generate that depends
+			-- on the build system you end up standardizing on, e.g.:
+			--   - CMake:    set(CMAKE_EXPORT_COMPILE_COMMANDS ON) and symlink the
+			--               generated compile_commands.json into the project root
+			--   - Makefile: generate one with `bear -- make` or `compiledb make`
+			-- Revisit this once that decision is made.
+			vim.lsp.config('clangd', {
+				cmd = { "clangd", "--background-index", "--clang-tidy" },
+			})
+			vim.lsp.enable('clangd')
 
 			vim.api.nvim_create_autocmd('LspAttach', {
 				callback = function(event)
